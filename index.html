@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milena & Armen — Wedding Invitation</title>
+    <!-- Google Fonts for Luxury Aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <div class="invitation-wrapper">
+        <!-- Header Monogram / Tag -->
+        <span class="top-tag">The Wedding Celebration</span>
+
+        <!-- Couple's Photo Frame -->
+        <div class="photo-container" onclick="revealDetails()">
+            <img src="photo.jpg" alt="Milena & Armen" class="couple-photo">
+            <div class="photo-overlay">
+                <span>Tap to Open Invitation ✨</span>
+            </div>
+        </div>
+
+        <!-- Names & Subtitle -->
+        <h1 class="couple-names">Milena <span>&</span> Armen</h1>
+        <p class="invitation-text">
+            Together with our families, we joyfully invite you to celebrate our marriage as we begin our next chapter together.
+        </p>
+
+        <!-- Main Action Button -->
+        <button class="gold-btn" onclick="revealDetails()">View Details & RSVP</button>
+
+        <!-- Hidden Details Section (Reveals on Click) -->
+        <div id="details-section" class="details-section hidden">
+            
+            <div class="divider">✦ ✦ ✦</div>
+
+            <div class="event-info">
+                <div class="info-card">
+                    <span class="icon">📅</span>
+                    <h3>Date</h3>
+                    <p>Saturday, October 25, 2026</p>
+                </div>
+                <div class="info-card">
+                    <span class="icon">⏰</span>
+                    <h3>Time</h3>
+                    <p>5:00 PM Ceremony</p>
+                </div>
+                <div class="info-card">
+                    <span class="icon">📍</span>
+                    <h3>Location</h3>
+                    <p>Armenia Restaurant Complex<br><small>Yerevan, Armenia</small></p>
+                </div>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="countdown-container">
+                <h3>Counting Down to Forever</h3>
+                <div id="countdown" class="countdown">
+                    <!-- Dynamic Timer loaded via JS -->
+                </div>
+            </div>
+
+            <!-- RSVP Form Section -->
+            <div class="rsvp-section">
+                <h3>Will you join us?</h3>
+                <form id="rsvp-form" onsubmit="handleRSVP(event)">
+                    <input type="text" id="guest-name" placeholder="Full Name(s)" required>
+                    <select id="guest-attendance" required>
+                        <option value="" disabled selected>Please select your response</option>
+                        <option value="Joyfully Accepts">Joyfully Accepts</option>
+                        <option value="Regretfully Declines">Regretfully Declines</option>
+                    </select>
+                    <button type="submit" class="submit-btn">Send RSVP</button>
+                </form>
+                <div id="rsvp-success" class="rsvp-success hidden">
+                    Thank you! Your response has been recorded. 🤍
+                </div>
+            </div>
+
+            <p class="closing-quote">"True love stories never have endings."</p>
+        </div>
+    </div>
+
+    <script>
+        function revealDetails() {
+            const details = document.getElementById('details-section');
+            details.classList.remove('hidden');
+            details.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Countdown Timer Logic (Target: Oct 25, 2026 17:00:00)
+        const weddingDate = new Date("October 25, 2026 17:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = `
+                <div><span>${days}</span>Days</div>
+                <div><span>${hours}</span>Hours</div>
+                <div><span>${minutes}</span>Mins</div>
+                <div><span>${seconds}</span>Secs</div>
+            `;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "The celebration has begun!";
+            }
+        }, 1000);
+
+        // RSVP mock submission handler
+        function handleRSVP(event) {
+            event.preventDefault();
+            document.getElementById('rsvp-form').style.display = 'none';
+            document.getElementById('rsvp-success').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
