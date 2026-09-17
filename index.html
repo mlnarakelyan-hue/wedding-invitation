@@ -3,32 +3,564 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milena & Armen — Wedding Invitation</title>
-    <!-- Google Fonts for Luxury Aesthetic -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Sarah & Michael | The Wedding</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-color: #1a1a1a; /* Dark Charcoal */
+            --accent-color: #d4af37; /* Metallic Gold */
+            --bg-color: #f9f9f9; /* Off White */
+            --text-light: #ffffff;
+            --font-script: 'Great Vibes', cursive;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+        }
+
+        .script-font {
+            font-family: var(--font-script);
+            color: var(--accent-color);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-family: var(--font-script);
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 3rem;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+            transition: 0.4s;
+            background: rgba(255, 255, 255, 0.0);
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-family: var(--font-sans);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        nav.scrolled a {
+            color: var(--primary-color);
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-script);
+            font-size: 6rem;
+            color: var(--text-light);
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+            padding: 10px 30px;
+        }
+
+        /* --- COUNTDOWN --- */
+        .countdown-container {
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-box span {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--accent-color);
+        }
+
+        .time-box small {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        /* --- STORY SECTION --- */
+        .story {
+            padding: 100px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .story p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* --- DETAILS SECTION --- */
+        .details {
+            background-color: #fff;
+            padding: 100px 20px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .detail-card {
+            text-align: center;
+            padding: 40px;
+            border: 1px solid #eee;
+            transition: 0.3s;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-color: var(--accent-color);
+        }
+
+        .detail-card i {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .detail-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- GALLERY --- */
+        .gallery {
+            padding: 100px 0;
+            background: var(--bg-color);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 0 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* --- RSVP SECTION --- */
+        .rsvp {
+            padding: 100px 20px;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+        }
+
+        .rsvp-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 4px;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-color);
+        }
+
+        button.btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        button.btn-submit:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        footer h2 {
+            font-family: var(--font-script);
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 4rem; }
+            nav ul { gap: 15px; font-size: 0.7rem; }
+            .timer { gap: 20px; }
+            .time-box span { font-size: 2.5rem; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .rsvp-form { padding: 30px 20px; }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="invitation-wrapper">
-        <!-- Header Monogram / Tag -->
-        <span class="top-tag">The Wedding Celebration</span>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#story">Our Story</a></li>
+            <li><a href="#details">Details</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#rsvp">RSVP</a></li>
+        </ul>
+    </nav>
 
-        <!-- Couple's Photo Frame -->
-        <div class="photo-container" onclick="revealDetails()">
-            <img src="photo.jpg" alt="Milena & Armen" class="couple-photo">
-            <div class="photo-overlay">
-                <span>Tap to Open Invitation ✨</span>
+    <!-- Hero Section -->
+    <header id="home" class="hero">
+        <h2>We Are Getting Married</h2>
+        <h1>Sarah & Michael</h1>
+        <p>OCTOBER 24, 2026 • NAPA VALLEY, CA</p>
+    </header>
+
+    <!-- Countdown Section -->
+    <section class="countdown-container">
+        <div class="timer" id="timer">
+            <div class="time-box"><span id="days">00</span><small>Days</small></div>
+            <div class="time-box"><span id="hours">00</span><small>Hours</small></div>
+            <div class="time-box"><span id="minutes">00</span><small>Minutes</small></div>
+            <div class="time-box"><span id="seconds">00</span><small>Seconds</small></div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="story reveal">
+        <div class="section-subtitle">The Beginning</div>
+        <h2 class="section-title">Our Love Story</h2>
+        <br>
+        <p>It started with a simple coffee date that turned into a conversation lasting six hours. Five years, three apartments, and one golden retriever later, we are ready to start our next chapter.</p>
+        <p>We invite you to share in our joy as we exchange vows surrounded by the people we love most.</p>
+    </section>
+
+    <!-- Details Section -->
+    <section id="details" class="details reveal">
+        <div class="section-subtitle">The Plan</div>
+        <h2 class="section-title">Wedding Details</h2>
+        
+        <div class="details-grid">
+            <!-- Ceremony -->
+            <div class="detail-card">
+                <i class="fas fa-church"></i>
+                <h3>The Ceremony</h3>
+                <p><strong>4:00 PM</strong></p>
+                <p>The Vineyard Terrace</p>
+                <p>123 Winery Road, Napa, CA</p>
+            </div>
+
+            <!-- Reception -->
+            <div class="detail-card">
+                <i class="fas fa-glass-cheers"></i>
+                <h3>The Reception</h3>
+                <p><strong>6:00 PM</strong></p>
+                <p>The Grand Ballroom</p>
+                <p>Dinner, Drinks & Dancing</p>
+            </div>
+
+            <!-- Dress Code -->
+            <div class="detail-card">
+                <i class="fas fa-tshirt"></i>
+                <h3>Dress Code</h3>
+                <p><strong>Black Tie Optional</strong></p>
+                <p>Formal Evening Wear</p>
+                <p>Please avoid wearing white</p>
             </div>
         </div>
+    </section>
 
-        <!-- Names & Subtitle -->
-        <h1 class="couple-names">Milena <span>&</span> Armen</h1>
-        <p class="invitation-text">
-            Together with our families, we joyfully invite you to celebrate our marriage as we begin our next chapter together.
-        </p>
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery reveal">
+        <div class="section-subtitle">Captured Moments</div>
+        <h2 class="section-title">Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1511285560982-1351cdeb9821?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Couple"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1522673607200-1645062cd495?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Holding Hands"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Rings"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1520854221256-17451cc330e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Flowers"></div>
+        </div>
+    </section>
 
-        <!-- Main Action Button -->
+    <!-- RSVP Section -->
+    <section id="rsvp" class="rsvp reveal">
+        <div class="section-subtitle">Are You Attending?</div>
+        <h2 class="section-title" style="color:white;">RSVP</h2>
+        
+        <!-- Note: To make this work, sign up at formspree.io and replace the action URL -->
+        <form class="rsvp-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" name="name" required placeholder="John Doe">
+            </div>
+            
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" required placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+                <label>Will you attend?</label>
+                <select name="attendance">
+                    <option value="accepts">Joyfully Accepts</option>
+                    <option value="declines">Regretfully Declines</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Guests</label>
+                <select name="guests">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Message / Dietary Restrictions</label>
+                <textarea name="message" rows="4"></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Send RSVP</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h2>S & M</h2>
+        <p>#SarahAndMichael2026</p>
+        <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">Made with love</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 1. Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Countdown Timer Logic
+        const weddingDate = new Date("Oct 24, 2026 16:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("timer").innerHTML = "<h2>Happily Ever After</h2>";
+            }
+        }, 1000);
+
+        // 3. Scroll Reveal Animation
+        window.addEventListener('scroll', reveal);
+
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        // Trigger once on load
+        reveal();
+    </script>
+</body>
+</html>Action Button -->
         <button class="gold-btn" onclick="revealDetails()">View Details & RSVP</button>
 
         <!-- Hidden Details Section (Reveals on Click) -->
