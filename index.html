@@ -32,13 +32,14 @@
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    background: radial-gradient(ellipse at center, #2d4a3e 0%, #1f3a2e 60%, #0f1f18 100%);
+    background: 
+      radial-gradient(ellipse at center, #2d4a3e 0%, #1f3a2e 60%, #0f1f18 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: opacity 1.5s ease, visibility 1.5s;
+    transition: opacity 2s ease, visibility 2s;
   }
   
   .envelope-screen.opened {
@@ -47,38 +48,81 @@
     pointer-events: none;
   }
   
+  .envelope-content {
+    text-align: center;
+    animation: fadeInUp 1.5s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
   .envelope-text-top {
     color: var(--cream);
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 5px;
+    font-size: 0.8rem;
+    letter-spacing: 6px;
     text-transform: uppercase;
-    margin-bottom: 30px;
-    opacity: 0.8;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+  
+  .envelope-names-preview {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: var(--cream);
+    margin-bottom: 50px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
   }
   
   .open-btn {
-    padding: 18px 45px;
+    padding: 20px 50px;
     background: transparent;
     border: 1px solid var(--cream);
     color: var(--cream);
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 4px;
+    font-size: 0.85rem;
+    letter-spacing: 5px;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.4s ease;
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .open-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0; height: 0;
+    background: var(--cream);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    z-index: -1;
   }
   
   .open-btn:hover {
-    background: var(--cream);
     color: var(--green-deep);
+  }
+  
+  .open-btn:hover::before {
+    width: 400px;
+    height: 400px;
   }
   
   /* ============ MAIN CONTENT ============ */
   .main-content {
     opacity: 0;
-    transition: opacity 1.5s ease 0.5s;
+    transition: opacity 2s ease 1s;
   }
   
   .main-content.show { opacity: 1; }
@@ -94,8 +138,8 @@
     text-align: center;
     position: relative;
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 1.2s ease, transform 1.2s ease;
+    transform: translateY(40px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
   }
   
   .page-section.visible {
@@ -105,7 +149,7 @@
   
   /* ============ HERO (PHOTO + NAMES + DATE) ============ */
   #hero {
-    background: url('hero.jpg') center/cover no-repeat;
+    background: url('IMG_2853.JPG') center/cover no-repeat;
     position: relative;
   }
   
@@ -113,37 +157,49 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(31, 58, 46, 0.3) 0%, rgba(31, 58, 46, 0.5) 100%);
+    background: linear-gradient(180deg, rgba(31, 58, 46, 0.4) 0%, rgba(31, 58, 46, 0.6) 100%);
   }
   
   .hero-content {
     position: relative;
     z-index: 2;
     color: #fff;
+    animation: heroFadeIn 2s ease 1.5s both;
+  }
+  
+  @keyframes heroFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .hero-names {
     font-family: 'Great Vibes', cursive;
-    font-size: 5rem;
-    margin-bottom: 20px;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    font-size: 6rem;
+    margin-bottom: 25px;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.4);
     line-height: 1.2;
+  }
+  
+  .hero-divider {
+    width: 80px;
+    height: 1px;
+    background: #fff;
+    margin: 30px auto;
+    opacity: 0.8;
   }
   
   .hero-date {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 8px;
+    font-size: 1.2rem;
+    letter-spacing: 10px;
     text-transform: uppercase;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  }
-  
-  .hero-divider {
-    width: 60px;
-    height: 1px;
-    background: #fff;
-    margin: 25px auto;
-    opacity: 0.7;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.4);
   }
   
   /* ============ COUNTDOWN ============ */
@@ -153,28 +209,28 @@
   
   .countdown-label {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 5px;
+    font-size: 0.8rem;
+    letter-spacing: 6px;
     color: var(--text-soft);
     text-transform: uppercase;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
   
   .countdown-box {
     display: flex;
-    gap: 30px;
+    gap: 35px;
     flex-wrap: wrap;
     justify-content: center;
   }
   
   .time-unit {
-    min-width: 100px;
+    min-width: 110px;
     text-align: center;
   }
   
   .time-number {
     font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 400;
     color: var(--green-deep);
     line-height: 1;
@@ -182,11 +238,11 @@
   
   .time-label {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     letter-spacing: 3px;
     color: var(--text-soft);
     text-transform: uppercase;
-    margin-top: 10px;
+    margin-top: 12px;
   }
   
   /* ============ SCHEDULE PAGES ============ */
@@ -198,63 +254,65 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
   }
   
   .schedule-page.with-bg::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(250, 246, 240, 0.85); /* Light overlay for readability */
+    background: rgba(250, 246, 240, 0.88);
   }
   
   .schedule-content {
     position: relative;
     z-index: 2;
-    max-width: 500px;
+    max-width: 550px;
   }
   
   .schedule-time {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 5px;
+    font-size: 0.85rem;
+    letter-spacing: 6px;
     color: var(--green-dark);
     text-transform: uppercase;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-weight: 500;
   }
   
   .schedule-title {
     font-family: 'Great Vibes', cursive;
-    font-size: 4rem;
+    font-size: 4.5rem;
     color: var(--green-deep);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     line-height: 1.2;
   }
   
   .schedule-desc {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--text-soft);
     font-style: italic;
-    line-height: 1.6;
-    margin-bottom: 30px;
+    line-height: 1.7;
+    margin-bottom: 35px;
   }
   
   .schedule-address {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     letter-spacing: 2px;
     color: var(--text);
-    line-height: 1.8;
-    padding: 20px;
+    line-height: 1.9;
+    padding: 25px 30px;
     border: 1px solid var(--nude);
     display: inline-block;
+    background: rgba(255,255,255,0.5);
   }
   
   .page-divider {
-    width: 40px;
+    width: 50px;
     height: 1px;
     background: var(--nude-dark);
-    margin: 25px auto;
+    margin: 30px auto;
   }
   
   /* ============ RSVP ============ */
@@ -264,50 +322,50 @@
   
   .rsvp-title {
     font-family: 'Great Vibes', cursive;
-    font-size: 4rem;
+    font-size: 4.5rem;
     color: var(--green-deep);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   
   .rsvp-subtitle {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-style: italic;
     color: var(--text-soft);
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
   
   .rsvp-form {
     background: #fff;
-    padding: 50px 40px;
-    max-width: 450px;
+    padding: 55px 45px;
+    max-width: 480px;
     width: 100%;
-    box-shadow: 0 20px 60px rgba(31, 58, 46, 0.1);
+    box-shadow: 0 25px 70px rgba(31, 58, 46, 0.12);
   }
   
   .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
     text-align: left;
   }
   
   .form-group label {
     display: block;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     letter-spacing: 3px;
     color: var(--text-soft);
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   
   .form-group input,
   .form-group select {
     width: 100%;
-    padding: 14px 18px;
+    padding: 16px 20px;
     border: 1px solid var(--nude);
     background: var(--cream);
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--text);
     transition: all 0.3s;
   }
@@ -321,12 +379,12 @@
   
   .submit-btn {
     width: 100%;
-    padding: 18px;
+    padding: 20px;
     background: var(--green-deep);
     color: var(--cream);
     border: none;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     cursor: pointer;
@@ -341,9 +399,9 @@
   .success-message {
     display: none;
     text-align: center;
-    padding: 30px;
+    padding: 35px;
     color: var(--green-deep);
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-style: italic;
   }
   
@@ -354,32 +412,34 @@
     background: var(--green-deep);
     color: var(--cream);
     text-align: center;
-    padding: 40px 20px;
+    padding: 50px 20px;
   }
   
   footer .footer-names {
     font-family: 'Great Vibes', cursive;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: 3rem;
+    margin-bottom: 12px;
   }
   
   footer small {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
     opacity: 0.7;
   }
   
   /* ============ RESPONSIVE ============ */
   @media (max-width: 768px) {
-    .hero-names { font-size: 3.5rem; }
-    .hero-date { font-size: 0.9rem; letter-spacing: 5px; }
-    .schedule-title { font-size: 3rem; }
-    .rsvp-title { font-size: 3rem; }
-    .time-number { font-size: 2.5rem; }
-    .time-unit { min-width: 70px; }
-    .countdown-box { gap: 15px; }
-    .rsvp-form { padding: 30px 20px; }
+    .hero-names { font-size: 4rem; }
+    .hero-date { font-size: 1rem; letter-spacing: 6px; }
+    .schedule-title { font-size: 3.2rem; }
+    .rsvp-title { font-size: 3.2rem; }
+    .time-number { font-size: 3rem; }
+    .time-unit { min-width: 80px; }
+    .countdown-box { gap: 20px; }
+    .rsvp-form { padding: 35px 25px; }
+    .envelope-names-preview { font-size: 2.5rem; }
+    .schedule-page.with-bg { background-attachment: scroll; }
   }
 </style>
 </head>
@@ -387,8 +447,11 @@
 
 <!-- ============ ENVELOPE SCREEN ============ -->
 <div class="envelope-screen" id="envelope">
-  <div class="envelope-text-top">Sealed for the Wedding of</div>
-  <button class="open-btn" onclick="openEnvelope()">Open Invitation</button>
+  <div class="envelope-content">
+    <div class="envelope-text-top">Sealed for the Wedding of</div>
+    <div class="envelope-names-preview">Anna & David</div>
+    <button class="open-btn" onclick="openEnvelope()">Open Invitation</button>
+  </div>
 </div>
 
 <!-- ============ MAIN CONTENT ============ -->
@@ -463,7 +526,7 @@
   </section>
 
   <!-- SCHEDULE PAGE 3: CEREMONY (CHURCH) -->
-  <section class="page-section schedule-page with-bg" id="ceremony" style="background-image: url('church.jpg');">
+  <section class="page-section schedule-page with-bg" id="ceremony" style="background-image: url('IMG_2854.JPG');">
     <div class="schedule-content">
       <div class="schedule-time">3:00 PM</div>
       <h2 class="schedule-title">Holy Ceremony</h2>
@@ -482,7 +545,7 @@
   </section>
 
   <!-- SCHEDULE PAGE 4: RESTAURANT -->
-  <section class="page-section schedule-page with-bg" id="restaurant" style="background-image: url('restaurant.jpg');">
+  <section class="page-section schedule-page with-bg" id="restaurant" style="background-image: url('IMG_2855.JPG');">
     <div class="schedule-content">
       <div class="schedule-time">6:00 PM</div>
       <h2 class="schedule-title">Wedding Reception</h2>
@@ -529,7 +592,7 @@
       </div>
       <div class="success-message" id="successMsg">
         Thank you!<br>
-        <span style="font-size:1rem; color:var(--text-soft);">We look forward to celebrating with you.</span>
+        <span style="font-size:1.1rem; color:var(--text-soft);">We look forward to celebrating with you.</span>
       </div>
     </form>
   </section>
@@ -552,8 +615,10 @@
       document.getElementById('mainContent').classList.add('show');
       document.body.style.overflow = 'auto';
       // Trigger animation for first section
-      document.getElementById('hero').classList.add('visible');
-    }, 1500);
+      setTimeout(() => {
+        document.getElementById('hero').classList.add('visible');
+      }, 500);
+    }, 2000);
   }
   
   document.body.style.overflow = 'hidden';
@@ -565,7 +630,7 @@
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.25 });
   
   document.querySelectorAll('.page-section').forEach(el => {
     if (el.id !== 'hero') observer.observe(el);
