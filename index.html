@@ -271,9 +271,7 @@
     padding: 100px 20px;
   }
   
-  /* ========================================= */
-  /* CREATIVE GROOM'S HOUSE - WITH IMAGE */
-  /* ========================================= */
+  /* GROOM'S HOUSE - WITH IMAGE BACKGROUND */
   #groom {
     background: linear-gradient(135deg, rgba(31,58,46,0.85), rgba(45,74,62,0.85)), 
                 url('IMG_2856.JPG') center/cover no-repeat fixed;
@@ -297,7 +295,6 @@
     overflow: hidden;
   }
   
-  /* Decorative top image banner */
   #groom .schedule-content::before {
     content: '';
     position: absolute;
@@ -309,7 +306,6 @@
     opacity: 0.9;
   }
   
-  /* Decorative pattern overlay */
   #groom .schedule-content::after {
     content: '';
     position: absolute;
@@ -346,9 +342,7 @@
     border-radius: 0 0 20px 0;
   }
   
-  /* ========================================= */
-  /* CREATIVE BRIDE'S HOUSE - WITH IMAGE */
-  /* ========================================= */
+  /* BRIDE'S HOUSE - WITH IMAGE BACKGROUND */
   #bride {
     background: linear-gradient(135deg, rgba(232,216,196,0.9), rgba(250,246,240,0.9)), 
                 url('IMG_2857.JPG') center/cover no-repeat fixed;
@@ -372,7 +366,6 @@
     overflow: hidden;
   }
   
-  /* Floral decorative elements */
   #bride .schedule-content::before {
     content: '❦';
     position: absolute;
@@ -402,7 +395,6 @@
     z-index: 2;
   }
   
-  /* Side decorative vines */
   #bride .vine-left,
   #bride .vine-right {
     position: absolute;
@@ -648,8 +640,6 @@
     .env-names { font-size: 3.5rem; }
     .seal { width: 120px; height: 120px; font-size: 1.6rem; }
     .schedule-page.with-image { background-attachment: scroll; }
-    
-    /* Hide decorative elements on mobile */
     .decorative-corner, .vine-left, .vine-right { display: none; }
   }
   @media (max-width: 480px) {
@@ -716,7 +706,7 @@
     </div>
   </section>
 
-  <!-- Groom's House - CREATIVE WITH IMAGE -->
+  <!-- Groom's House -->
   <section class="schedule-page" id="groom">
     <div class="schedule-content">
       <div class="decorative-corner corner-top-left"></div>
@@ -735,7 +725,7 @@
     </div>
   </section>
 
-  <!-- Bride's House - CREATIVE WITH IMAGE -->
+  <!-- Bride's House -->
   <section class="schedule-page" id="bride">
     <div class="vine-left"></div>
     <div class="vine-right"></div>
