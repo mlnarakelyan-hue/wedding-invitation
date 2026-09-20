@@ -3,19 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wedding Invitation</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Anna & David | Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
   :root {
     --green-deep: #1f3a2e;
     --green-dark: #2d4a3e;
+    --green-light: #5a7a68;
     --cream: #faf6f0;
     --nude: #e8d8c4;
     --nude-dark: #c9b8a0;
     --text: #2a1f18;
     --text-soft: #5a4a3e;
+    --gold-accent: #d4af37;
   }
   
   html { scroll-behavior: smooth; }
@@ -25,6 +27,36 @@
     background: var(--cream);
     color: var(--text);
     overflow-x: hidden;
+  }
+  
+  /* ============ LOADING SCREEN ============ */
+  .loader {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: var(--green-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 1s ease, visibility 1s;
+  }
+  
+  .loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .loader-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    color: var(--cream);
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
   }
   
   /* ============ ENVELOPE SCREEN ============ */
@@ -38,85 +70,162 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 10000;
-    transition: opacity 2s ease, visibility 2s;
+    z-index: 9999;
+    transition: transform 1.5s ease, opacity 1.5s ease, visibility 1.5s;
+    perspective: 2000px;
   }
   
   .envelope-screen.opened {
+    transform: rotateX(90deg) scale(0.8);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
   }
   
-  .envelope-content {
-    text-align: center;
-    animation: fadeInUp 1.5s ease;
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .envelope-text-top {
-    color: var(--cream);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    margin-bottom: 40px;
-    opacity: 0.9;
-  }
-  
-  .envelope-names-preview {
-    font-family: 'Great Vibes', cursive;
-    font-size: 3.5rem;
-    color: var(--cream);
-    margin-bottom: 50px;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
-  }
-  
-  .open-btn {
-    padding: 20px 50px;
-    background: transparent;
-    border: 1px solid var(--cream);
-    color: var(--cream);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.5s ease;
+  .envelope-container {
     position: relative;
+    width: 90%;
+    max-width: 500px;
+    aspect-ratio: 3/4;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+  }
+  
+  .envelope-container:hover {
+    transform: rotateY(5deg) rotateX(5deg);
+  }
+  
+  .envelope-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      linear-gradient(145deg, #2d4a3e 0%, #1f3a2e 50%, #162d24 100%);
+    border-radius: 8px;
+    box-shadow: 
+      0 50px 120px rgba(0,0,0,0.7),
+      inset 0 0 100px rgba(0,0,0,0.4);
     overflow: hidden;
   }
   
-  .open-btn::before {
+  /* Decorative corners */
+  .corner {
+    position: absolute;
+    width: 100px; height: 100px;
+    color: rgba(212, 175, 55, 0.6);
+    font-size: 3rem;
+    opacity: 0.7;
+  }
+  .corner.tl { top: 20px; left: 20px; }
+  .corner.tr { top: 20px; right: 20px; transform: scaleX(-1); }
+  .corner.bl { bottom: 20px; left: 20px; transform: scaleY(-1); }
+  .corner.br { bottom: 20px; right: 20px; transform: scale(-1, -1); }
+  
+  .envelope-text-top {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    width: 90%;
+    opacity: 0.9;
+  }
+  
+  .envelope-names {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--cream);
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    text-align: center;
+    width: 100%;
+    text-shadow: 0 3px 25px rgba(0,0,0,0.4);
+  }
+  
+  /* Wax Seal */
+  .wax-seal {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: 
+      radial-gradient(circle at 35% 35%, #fff 0%, var(--nude) 40%, var(--nude-dark) 100%);
+    box-shadow: 
+      0 20px 50px rgba(0,0,0,0.6),
+      inset 0 -10px 25px rgba(139, 111, 58, 0.2),
+      inset 0 10px 25px rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 1.2s ease, opacity 0.8s;
+    z-index: 5;
+    cursor: pointer;
+  }
+  
+  .wax-seal::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0; height: 0;
-    background: var(--cream);
+    inset: 12px;
     border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-    z-index: -1;
+    border: 2px solid rgba(139, 111, 58, 0.3);
   }
   
-  .open-btn:hover {
+  .wax-seal::after {
+    content: 'A & D';
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
     color: var(--green-deep);
+    font-weight: 700;
+    letter-spacing: 3px;
   }
   
-  .open-btn:hover::before {
-    width: 400px;
-    height: 400px;
+  .envelope-screen.opened .wax-seal {
+    transform: translate(-50%, -50%) scale(2.5) rotate(720deg);
+    opacity: 0;
+  }
+  
+  .envelope-text-bottom {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    animation: glow 2.5s infinite;
+  }
+  
+  @keyframes glow {
+    0%, 100% { opacity: 0.5; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+    50% { opacity: 1; text-shadow: 0 0 25px rgba(255,255,255,0.8); }
+  }
+  
+  .click-hint {
+    position: absolute;
+    bottom: 10%;
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    opacity: 0.6;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
   
   /* ============ MAIN CONTENT ============ */
@@ -127,173 +236,262 @@
   
   .main-content.show { opacity: 1; }
   
-  /* ============ FULL PAGE SECTIONS ============ */
-  .page-section {
+  /* ============ PARALLAX SECTIONS ============ */
+  .parallax-section {
     min-height: 100vh;
+    position: relative;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
-    text-align: center;
-    position: relative;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 1.5s ease, transform 1.5s ease;
   }
   
-  .page-section.visible {
-    opacity: 1;
-    transform: translateY(0);
+  .parallax-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 120%;
+    background-size: cover;
+    background-position: center;
+    will-change: transform;
   }
   
-  /* ============ HERO (PHOTO + NAMES + DATE) ============ */
-  #hero {
-    background: url('IMG_2853.JPG') center/cover no-repeat;
-    position: relative;
-  }
-  
-  #hero::before {
-    content: '';
+  .parallax-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(31, 58, 46, 0.4) 0%, rgba(31, 58, 46, 0.6) 100%);
+    background: linear-gradient(180deg, rgba(31, 58, 46, 0.4) 0%, rgba(31, 58, 46, 0.7) 100%);
+    z-index: 1;
+  }
+  
+  /* ============ HERO SECTION ============ */
+  #hero {
+    background: url('IMG_2853.JPG') center/cover;
   }
   
   .hero-content {
     position: relative;
     z-index: 2;
+    text-align: center;
     color: #fff;
-    animation: heroFadeIn 2s ease 1.5s both;
+    padding: 40px;
+    animation: heroReveal 2s ease 1.5s both;
   }
   
-  @keyframes heroFadeIn {
+  @keyframes heroReveal {
     from {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(60px) scale(0.95);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
+  }
+  
+  .hero-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    opacity: 0.9;
   }
   
   .hero-names {
     font-family: 'Great Vibes', cursive;
-    font-size: 6rem;
-    margin-bottom: 25px;
-    text-shadow: 0 4px 30px rgba(0,0,0,0.4);
-    line-height: 1.2;
+    font-size: 7rem;
+    margin-bottom: 30px;
+    text-shadow: 0 5px 40px rgba(0,0,0,0.5);
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, var(--nude) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .hero-divider {
-    width: 80px;
-    height: 1px;
-    background: #fff;
-    margin: 30px auto;
-    opacity: 0.8;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+    margin: 40px auto;
   }
   
   .hero-date {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 10px;
+    font-size: 1.3rem;
+    letter-spacing: 12px;
     text-transform: uppercase;
-    text-shadow: 0 2px 15px rgba(0,0,0,0.4);
+    text-shadow: 0 3px 20px rgba(0,0,0,0.5);
   }
   
-  /* ============ COUNTDOWN ============ */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    animation: scrollBounce 2s infinite;
+  }
+  
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+    50% { transform: translateX(-50%) translateY(-15px); opacity: 1; }
+  }
+  
+  .scroll-indicator::before {
+    content: '↓';
+    font-size: 2rem;
+    color: #fff;
+  }
+  
+  /* ============ COUNTDOWN SECTION ============ */
   #countdown {
     background: var(--cream);
   }
   
+  .countdown-container {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
   .countdown-label {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     letter-spacing: 6px;
     color: var(--text-soft);
     text-transform: uppercase;
     margin-bottom: 50px;
   }
   
-  .countdown-box {
-    display: flex;
-    gap: 35px;
-    flex-wrap: wrap;
-    justify-content: center;
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
   }
   
-  .time-unit {
-    min-width: 110px;
-    text-align: center;
+  .countdown-item {
+    background: #fff;
+    padding: 40px 20px;
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(31, 58, 46, 0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    overflow: hidden;
   }
   
-  .time-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 4rem;
-    font-weight: 400;
-    color: var(--green-deep);
-    line-height: 1;
-  }
-  
-  .time-label {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    color: var(--text-soft);
-    text-transform: uppercase;
-    margin-top: 12px;
-  }
-  
-  /* ============ SCHEDULE PAGES ============ */
-  .schedule-page {
-    background: var(--cream);
-  }
-  
-  .schedule-page.with-bg {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  
-  .schedule-page.with-bg::before {
+  .countdown-item::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: rgba(250, 246, 240, 0.88);
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--green-deep), var(--gold-accent));
   }
   
-  .schedule-content {
+  .countdown-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 70px rgba(31, 58, 46, 0.25);
+  }
+  
+  .countdown-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--green-deep);
+    line-height: 1;
+    margin-bottom: 15px;
+  }
+  
+  .countdown-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--text-soft);
+    text-transform: uppercase;
+  }
+  
+  /* ============ SCHEDULE SECTIONS ============ */
+  .schedule-section {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    overflow: hidden;
+  }
+  
+  .schedule-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    transition: transform 0.5s ease;
+  }
+  
+  .schedule-section:hover .schedule-bg {
+    transform: scale(1.05);
+  }
+  
+  .schedule-card {
     position: relative;
     z-index: 2;
-    max-width: 550px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 60px 50px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0 30px 100px rgba(31, 58, 46, 0.2);
+    border: 1px solid rgba(232, 216, 196, 0.5);
+    transform: translateY(40px);
+    opacity: 0;
+    transition: transform 1s ease, opacity 1s ease;
   }
   
-  .schedule-time {
+  .schedule-card.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .schedule-time-badge {
+    display: inline-block;
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 12px 30px;
+    border-radius: 30px;
     font-family: 'Montserrat', sans-serif;
     font-size: 0.85rem;
-    letter-spacing: 6px;
-    color: var(--green-dark);
+    letter-spacing: 4px;
     text-transform: uppercase;
-    margin-bottom: 25px;
-    font-weight: 500;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(31, 58, 46, 0.3);
   }
   
   .schedule-title {
     font-family: 'Great Vibes', cursive;
-    font-size: 4.5rem;
+    font-size: 5rem;
     color: var(--green-deep);
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     line-height: 1.2;
+  }
+  
+  .schedule-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--nude-dark), transparent);
+    margin: 30px auto;
   }
   
   .schedule-desc {
     font-size: 1.3rem;
     color: var(--text-soft);
     font-style: italic;
-    line-height: 1.7;
-    margin-bottom: 35px;
+    line-height: 1.8;
+    margin-bottom: 40px;
   }
   
   .schedule-address {
@@ -301,28 +499,55 @@
     font-size: 0.9rem;
     letter-spacing: 2px;
     color: var(--text);
-    line-height: 1.9;
-    padding: 25px 30px;
+    line-height: 2;
+    padding: 25px;
     border: 1px solid var(--nude);
-    display: inline-block;
-    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+    background: rgba(250, 246, 240, 0.6);
   }
   
-  .page-divider {
-    width: 50px;
-    height: 1px;
-    background: var(--nude-dark);
-    margin: 30px auto;
+  /* Special styling for church and restaurant */
+  #ceremony .schedule-card,
+  #restaurant .schedule-card {
+    background: rgba(255, 255, 255, 0.92);
   }
   
-  /* ============ RSVP ============ */
+  /* ============ RSVP SECTION ============ */
   #rsvp {
-    background: var(--nude);
+    background: linear-gradient(135deg, var(--nude) 0%, var(--cream) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    position: relative;
+  }
+  
+  #rsvp::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+  }
+  
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .rsvp-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
   }
   
   .rsvp-title {
     font-family: 'Great Vibes', cursive;
-    font-size: 4.5rem;
+    font-size: 5rem;
     color: var(--green-deep);
     margin-bottom: 20px;
   }
@@ -338,14 +563,15 @@
   .rsvp-form {
     background: #fff;
     padding: 55px 45px;
-    max-width: 480px;
-    width: 100%;
-    box-shadow: 0 25px 70px rgba(31, 58, 46, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 30px 100px rgba(31, 58, 46, 0.15);
+    border: 1px solid rgba(232, 216, 196, 0.6);
   }
   
   .form-group {
-    margin-bottom: 28px;
+    margin-bottom: 30px;
     text-align: left;
+    position: relative;
   }
   
   .form-group label {
@@ -356,6 +582,7 @@
     color: var(--text-soft);
     text-transform: uppercase;
     margin-bottom: 12px;
+    font-weight: 500;
   }
   
   .form-group input,
@@ -367,6 +594,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.15rem;
     color: var(--text);
+    border-radius: 8px;
     transition: all 0.3s;
   }
   
@@ -375,6 +603,7 @@
     outline: none;
     border-color: var(--green-deep);
     background: #fff;
+    box-shadow: 0 0 0 4px rgba(31, 58, 46, 0.1);
   }
   
   .submit-btn {
@@ -383,176 +612,284 @@
     background: var(--green-deep);
     color: var(--cream);
     border: none;
+    border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s;
-    margin-top: 10px;
+    transition: all 0.4s;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: var(--green-light);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    z-index: -1;
+  }
+  
+  .submit-btn:hover::before {
+    width: 500px;
+    height: 500px;
   }
   
   .submit-btn:hover {
-    background: var(--green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(31, 58, 46, 0.3);
   }
   
   .success-message {
     display: none;
     text-align: center;
-    padding: 35px;
-    color: var(--green-deep);
-    font-size: 1.4rem;
-    font-style: italic;
+    padding: 40px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(31, 58, 46, 0.15);
   }
   
   .success-message.show { display: block; }
+  
+  .success-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+  }
+  
+  .success-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: var(--green-deep);
+    margin-bottom: 15px;
+  }
+  
+  .success-subtext {
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    font-style: italic;
+  }
   
   /* ============ FOOTER ============ */
   footer {
     background: var(--green-deep);
     color: var(--cream);
     text-align: center;
-    padding: 50px 20px;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
   }
   
-  footer .footer-names {
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  }
+  
+  .footer-content {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .footer-names {
     font-family: 'Great Vibes', cursive;
-    font-size: 3rem;
-    margin-bottom: 12px;
+    font-size: 3.5rem;
+    margin-bottom: 15px;
   }
   
-  footer small {
+  .footer-date {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 4px;
+    font-size: 0.8rem;
+    letter-spacing: 5px;
     opacity: 0.7;
+  }
+  
+  .footer-hearts {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    animation: heartbeat 1.5s infinite;
+  }
+  
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  /* ============ FLOATING ELEMENTS ============ */
+  .floating-particle {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0.1;
+    z-index: 1;
+    animation: float 20s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-100px) rotate(180deg); }
   }
   
   /* ============ RESPONSIVE ============ */
   @media (max-width: 768px) {
-    .hero-names { font-size: 4rem; }
+    .hero-names { font-size: 4.5rem; }
     .hero-date { font-size: 1rem; letter-spacing: 6px; }
-    .schedule-title { font-size: 3.2rem; }
-    .rsvp-title { font-size: 3.2rem; }
-    .time-number { font-size: 3rem; }
-    .time-unit { min-width: 80px; }
-    .countdown-box { gap: 20px; }
-    .rsvp-form { padding: 35px 25px; }
-    .envelope-names-preview { font-size: 2.5rem; }
-    .schedule-page.with-bg { background-attachment: scroll; }
+    .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .countdown-number { font-size: 3rem; }
+    .schedule-title { font-size: 3.5rem; }
+    .rsvp-title { font-size: 3.5rem; }
+    .envelope-names { font-size: 3rem; }
+    .wax-seal { width: 120px; height: 120px; }
+    .wax-seal::after { font-size: 1.5rem; }
+    .schedule-card { padding: 40px 30px; }
+    .rsvp-form { padding: 40px 25px; }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-names { font-size: 3.5rem; }
+    .countdown-grid { grid-template-columns: 1fr 1fr; }
+    .countdown-item { padding: 30px 15px; }
+    .countdown-number { font-size: 2.5rem; }
+    .schedule-title { font-size: 3rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- ============ ENVELOPE SCREEN ============ -->
+<!-- Loading Screen -->
+<div class="loader" id="loader">
+  <div class="loader-text">Anna & David</div>
+</div>
+
+<!-- Envelope Screen -->
 <div class="envelope-screen" id="envelope">
-  <div class="envelope-content">
+  <div class="envelope-container" onclick="openEnvelope()">
+    <div class="envelope-bg"></div>
+    <div class="corner tl">❦</div>
+    <div class="corner tr">❦</div>
+    <div class="corner bl"></div>
+    <div class="corner br">❦</div>
     <div class="envelope-text-top">Sealed for the Wedding of</div>
-    <div class="envelope-names-preview">Anna & David</div>
-    <button class="open-btn" onclick="openEnvelope()">Open Invitation</button>
+    <div class="envelope-names">Anna & David</div>
+    <div class="wax-seal"></div>
+    <div class="envelope-text-bottom">Click to Open</div>
+    <div class="click-hint">▼</div>
   </div>
 </div>
 
-<!-- ============ MAIN CONTENT ============ -->
+<!-- Main Content -->
 <div class="main-content" id="mainContent">
 
-  <!-- HERO: PHOTO + NAMES + DATE -->
-  <section class="page-section" id="hero">
+  <!-- Hero Section -->
+  <section class="parallax-section" id="hero">
+    <div class="parallax-overlay"></div>
     <div class="hero-content">
+      <div class="hero-subtitle">Together with their families</div>
       <h1 class="hero-names">Anna & David</h1>
       <div class="hero-divider"></div>
       <div class="hero-date">October 18, 2026</div>
     </div>
+    <div class="scroll-indicator"></div>
   </section>
 
-  <!-- COUNTDOWN -->
-  <section class="page-section" id="countdown">
-    <div class="countdown-label">Counting the Moments</div>
-    <div class="countdown-box">
-      <div class="time-unit">
-        <div class="time-number" id="days">00</div>
-        <div class="time-label">Days</div>
-      </div>
-      <div class="time-unit">
-        <div class="time-number" id="hours">00</div>
-        <div class="time-label">Hours</div>
-      </div>
-      <div class="time-unit">
-        <div class="time-number" id="minutes">00</div>
-        <div class="time-label">Minutes</div>
-      </div>
-      <div class="time-unit">
-        <div class="time-number" id="seconds">00</div>
-        <div class="time-label">Seconds</div>
+  <!-- Countdown Section -->
+  <section class="parallax-section" id="countdown">
+    <div class="countdown-container">
+      <div class="countdown-label">Counting Down to Our Special Day</div>
+      <div class="countdown-grid">
+        <div class="countdown-item">
+          <div class="countdown-number" id="days">00</div>
+          <div class="countdown-text">Days</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-number" id="hours">00</div>
+          <div class="countdown-text">Hours</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-number" id="minutes">00</div>
+          <div class="countdown-text">Minutes</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-number" id="seconds">00</div>
+          <div class="countdown-text">Seconds</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- SCHEDULE PAGE 1: GROOM'S HOUSE -->
-  <section class="page-section schedule-page" id="groom-house">
-    <div class="schedule-content">
-      <div class="schedule-time">11:00 AM</div>
+  <!-- Groom's House -->
+  <section class="schedule-section" id="groom-house">
+    <div class="schedule-bg" style="background-image: url('IMG_2853.JPG');"></div>
+    <div class="schedule-card">
+      <div class="schedule-time-badge">11:00 AM</div>
       <h2 class="schedule-title">Groom's House</h2>
-      <div class="page-divider"></div>
+      <div class="schedule-divider"></div>
       <p class="schedule-desc">
-        Where the day begins with joy and tradition.<br>
-        Family gathers to bless the groom before the journey.
+        The celebration begins at the groom's family home,<br>
+        where traditions come alive and blessings are shared.
       </p>
       <div class="schedule-address">
-        The Groom's Family Home<br>
+        Groom's Family Residence<br>
         Address Line 1<br>
         City, Country
       </div>
     </div>
   </section>
 
-  <!-- SCHEDULE PAGE 2: BRIDE'S HOUSE -->
-  <section class="page-section schedule-page" id="bride-house">
-    <div class="schedule-content">
-      <div class="schedule-time">1:00 PM</div>
+  <!-- Bride's House -->
+  <section class="schedule-section" id="bride-house">
+    <div class="schedule-bg" style="background-image: url('IMG_2856.JPG');"></div>
+    <div class="schedule-card">
+      <div class="schedule-time-badge">1:00 PM</div>
       <h2 class="schedule-title">Bride's House</h2>
-      <div class="page-divider"></div>
+      <div class="schedule-divider"></div>
       <p class="schedule-desc">
-        The groom arrives to ask for his bride's hand.<br>
-        A beautiful tradition of love, music, and family blessings.
+        The groom's journey to claim his bride,<br>
+        filled with music, laughter, and joyful traditions.
       </p>
       <div class="schedule-address">
-        The Bride's Family Home<br>
+        Bride's Family Residence<br>
         Address Line 1<br>
         City, Country
       </div>
     </div>
   </section>
 
-  <!-- SCHEDULE PAGE 3: CEREMONY (CHURCH) -->
-  <section class="page-section schedule-page with-bg" id="ceremony" style="background-image: url('IMG_2854.JPG');">
-    <div class="schedule-content">
-      <div class="schedule-time">3:00 PM</div>
+  <!-- Ceremony -->
+  <section class="schedule-section" id="ceremony">
+    <div class="schedule-bg" style="background-image: url('IMG_2854.JPG');"></div>
+    <div class="schedule-card">
+      <div class="schedule-time-badge">3:00 PM</div>
       <h2 class="schedule-title">Holy Ceremony</h2>
-      <div class="page-divider"></div>
+      <div class="schedule-divider"></div>
       <p class="schedule-desc">
-        In the sacred presence of God and our loved ones,<br>
-        we unite our hearts in the holy Armenian ceremony.
+        United in love and faith at the Armenian Church,<br>
+        where two hearts become one before God.
       </p>
       <div class="schedule-address">
         Armenian Apostolic Church<br>
-        Church Name<br>
-        Address Line 1<br>
+        Church Name & Address<br>
         City, Country
       </div>
     </div>
   </section>
 
-  <!-- SCHEDULE PAGE 4: RESTAURANT -->
-  <section class="page-section schedule-page with-bg" id="restaurant" style="background-image: url('IMG_2855.JPG');">
-    <div class="schedule-content">
-      <div class="schedule-time">6:00 PM</div>
+  <!-- Restaurant -->
+  <section class="schedule-section" id="restaurant">
+    <div class="schedule-bg" style="background-image: url('IMG_2855.JPG');"></div>
+    <div class="schedule-card">
+      <div class="schedule-time-badge">6:00 PM</div>
       <h2 class="schedule-title">Wedding Reception</h2>
-      <div class="page-divider"></div>
+      <div class="schedule-divider"></div>
       <p class="schedule-desc">
-        Join us for an evening of dinner, dancing,<br>
-        and celebration as we begin our new life together.
+        An elegant evening of fine dining, dancing,<br>
+        and unforgettable celebrations.
       </p>
       <div class="schedule-address">
         Restaurant Name<br>
@@ -562,51 +899,64 @@
     </div>
   </section>
 
-  <!-- RSVP -->
-  <section class="page-section" id="rsvp">
-    <h2 class="rsvp-title">Will You Join Us?</h2>
-    <p class="rsvp-subtitle">Kindly let us know if you can celebrate with us</p>
-    <form class="rsvp-form" id="rsvpForm" onsubmit="submitRSVP(event)">
-      <div id="formFields">
-        <div class="form-group">
-          <label for="guestName">Name</label>
-          <input type="text" id="guestName" required placeholder="Enter your first name">
+  <!-- RSVP Section -->
+  <section class="parallax-section" id="rsvp">
+    <div class="rsvp-container">
+      <h2 class="rsvp-title">Will You Join Us?</h2>
+      <p class="rsvp-subtitle">We would be honored to have you celebrate with us</p>
+      <form class="rsvp-form" id="rsvpForm" onsubmit="submitRSVP(event)">
+        <div id="formFields">
+          <div class="form-group">
+            <label for="guestName">First Name</label>
+            <input type="text" id="guestName" required placeholder="Your first name">
+          </div>
+          <div class="form-group">
+            <label for="guestSurname">Surname</label>
+            <input type="text" id="guestSurname" required placeholder="Your surname">
+          </div>
+          <div class="form-group">
+            <label for="guestCount">Number of Guests</label>
+            <select id="guestCount" required>
+              <option value="">Select number of guests</option>
+              <option value="1">1 Person</option>
+              <option value="2">2 People</option>
+              <option value="3">3 People</option>
+              <option value="4">4 People</option>
+              <option value="5">5 People</option>
+              <option value="6+">6 or more</option>
+            </select>
+          </div>
+          <button type="submit" class="submit-btn">Confirm Attendance</button>
         </div>
-        <div class="form-group">
-          <label for="guestSurname">Surname</label>
-          <input type="text" id="guestSurname" required placeholder="Enter your surname">
-        </div>
-        <div class="form-group">
-          <label for="guestCount">Number of Guests</label>
-          <select id="guestCount" required>
-            <option value="">Select</option>
-            <option value="1">1 Person</option>
-            <option value="2">2 People</option>
-            <option value="3">3 People</option>
-            <option value="4">4 People</option>
-            <option value="5">5 People</option>
-            <option value="6+">6 or more</option>
-          </select>
-        </div>
-        <button type="submit" class="submit-btn">Send RSVP</button>
-      </div>
+      </form>
       <div class="success-message" id="successMsg">
-        Thank you!<br>
-        <span style="font-size:1.1rem; color:var(--text-soft);">We look forward to celebrating with you.</span>
+        <div class="success-icon">💌</div>
+        <div class="success-text">Thank You!</div>
+        <div class="success-subtext">We can't wait to celebrate with you</div>
       </div>
-    </form>
+    </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- Footer -->
   <footer>
-    <div class="footer-names">Anna & David</div>
-    <small>OCTOBER 18, 2026</small>
+    <div class="footer-content">
+      <div class="footer-names">Anna & David</div>
+      <div class="footer-date">OCTOBER 18, 2026</div>
+      <div class="footer-hearts">💚 💛 💚</div>
+    </div>
   </footer>
 
 </div>
 
 <script>
-  // ============ ENVELOPE OPENING ============
+  // Remove loader after page loads
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 1500);
+  });
+  
+  // Open envelope
   function openEnvelope() {
     const env = document.getElementById('envelope');
     env.classList.add('opened');
@@ -614,29 +964,41 @@
       env.style.display = 'none';
       document.getElementById('mainContent').classList.add('show');
       document.body.style.overflow = 'auto';
-      // Trigger animation for first section
+      // Trigger hero animation
       setTimeout(() => {
-        document.getElementById('hero').classList.add('visible');
-      }, 500);
-    }, 2000);
+        document.getElementById('hero').style.opacity = '1';
+      }, 300);
+    }, 1500);
   }
   
   document.body.style.overflow = 'hidden';
   
-  // ============ SCROLL ANIMATIONS ============
+  // Parallax effect
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.parallax-bg, .schedule-bg');
+    parallaxElements.forEach(el => {
+      const speed = 0.5;
+      el.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+  });
+  
+  // Intersection Observer for animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+        if (entry.target.classList.contains('schedule-card')) {
+          entry.target.classList.add('visible');
+        }
       }
     });
-  }, { threshold: 0.25 });
+  }, { threshold: 0.3 });
   
-  document.querySelectorAll('.page-section').forEach(el => {
-    if (el.id !== 'hero') observer.observe(el);
+  document.querySelectorAll('.schedule-card').forEach(el => {
+    observer.observe(el);
   });
   
-  // ============ COUNTDOWN ============
+  // Countdown
   const weddingDate = new Date('2026-10-18T15:00:00').getTime();
   
   function updateCountdown() {
@@ -665,7 +1027,7 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
   
-  // ============ RSVP ============
+  // RSVP Form
   function submitRSVP(e) {
     e.preventDefault();
     const name = document.getElementById('guestName').value;
@@ -677,6 +1039,24 @@
     document.getElementById('formFields').style.display = 'none';
     document.getElementById('successMsg').classList.add('show');
   }
+  
+  // Create floating particles
+  function createParticles() {
+    const symbols = ['❦', '✿', '❀', '✾'];
+    for (let i = 0; i < 5; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'floating-particle';
+      particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      particle.style.left = Math.random() * 100 + 'vw';
+      particle.style.top = Math.random() * 100 + 'vh';
+      particle.style.fontSize = (Math.random() * 20 + 20) + 'px';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+      document.body.appendChild(particle);
+    }
+  }
+  
+  createParticles();
 </script>
 
 </body>
