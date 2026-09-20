@@ -277,7 +277,6 @@
                 url('IMG_2856.JPG') center/cover no-repeat fixed;
     position: relative;
   }
-  
   #groom::before {
     content: '';
     position: absolute;
@@ -286,7 +285,6 @@
       radial-gradient(circle at 20% 50%, rgba(232,216,196,0.1) 0%, transparent 50%),
       radial-gradient(circle at 80% 80%, rgba(232,216,196,0.1) 0%, transparent 50%);
   }
-  
   #groom .schedule-content {
     background: rgba(255,255,255,0.95);
     border: none;
@@ -294,7 +292,6 @@
     position: relative;
     overflow: hidden;
   }
-  
   #groom .schedule-content::before {
     content: '';
     position: absolute;
@@ -305,21 +302,17 @@
     background: linear-gradient(135deg, var(--green), var(--green-dark));
     opacity: 0.9;
   }
-  
   #groom .schedule-content::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: 
-      repeating-linear-gradient(45deg, rgba(31,58,46,0.02) 0px, rgba(31,58,46,0.02) 1px, transparent 1px, transparent 20px);
+    background-image: repeating-linear-gradient(45deg, rgba(31,58,46,0.02) 0px, rgba(31,58,46,0.02) 1px, transparent 1px, transparent 20px);
     pointer-events: none;
   }
-  
   #groom .content-wrapper {
     position: relative;
     z-index: 2;
   }
-  
   #groom .decorative-corner {
     position: absolute;
     width: 80px;
@@ -348,7 +341,6 @@
                 url('IMG_2857.JPG') center/cover no-repeat fixed;
     position: relative;
   }
-  
   #bride::before {
     content: '';
     position: absolute;
@@ -357,7 +349,6 @@
       radial-gradient(circle at 30% 30%, rgba(31,58,46,0.08) 0%, transparent 40%),
       radial-gradient(circle at 70% 70%, rgba(31,58,46,0.08) 0%, transparent 40%);
   }
-  
   #bride .schedule-content {
     background: rgba(255,255,255,0.92);
     border: 2px solid rgba(232,216,196,0.8);
@@ -365,7 +356,6 @@
     position: relative;
     overflow: hidden;
   }
-  
   #bride .schedule-content::before {
     content: '❦';
     position: absolute;
@@ -377,7 +367,6 @@
     opacity: 0.4;
     z-index: 3;
   }
-  
   #bride .schedule-content::after {
     content: '✿';
     position: absolute;
@@ -389,12 +378,10 @@
     opacity: 0.5;
     z-index: 3;
   }
-  
   #bride .content-wrapper {
     position: relative;
     z-index: 2;
   }
-  
   #bride .vine-left,
   #bride .vine-right {
     position: absolute;
@@ -589,6 +576,11 @@
     transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(31,58,46,0.4);
   }
+  .submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
   .success-msg {
     display: none;
     padding: 50px;
@@ -779,19 +771,21 @@
     <div class="rsvp-container">
       <h2 class="rsvp-title">Will You Join Us?</h2>
       <p class="rsvp-subtitle">We would be honored to have you celebrate with us</p>
-      <form class="rsvp-form" id="rsvpForm" onsubmit="submitRSVP(event)">
+      
+      <!-- FORMSPREE INTEGRATION -->
+      <form class="rsvp-form" id="rsvpForm" action="https://formspree.io/f/maeneowd" method="POST" onsubmit="submitRSVP(event)">
         <div id="formFields">
           <div class="form-group">
             <label for="name">First Name</label>
-            <input type="text" id="name" required placeholder="Your first name">
+            <input type="text" id="name" name="name" required placeholder="Your first name">
           </div>
           <div class="form-group">
             <label for="surname">Surname</label>
-            <input type="text" id="surname" required placeholder="Your surname">
+            <input type="text" id="surname" name="surname" required placeholder="Your surname">
           </div>
           <div class="form-group">
             <label for="guests">Number of Guests</label>
-            <select id="guests" required>
+            <select id="guests" name="guests" required>
               <option value="">Select number</option>
               <option value="1">1 Person</option>
               <option value="2">2 People</option>
@@ -808,6 +802,7 @@
           <p>We can't wait to celebrate with you</p>
         </div>
       </form>
+      
     </div>
   </section>
 
@@ -867,11 +862,38 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 document.querySelectorAll('.schedule-content').forEach(el => observer.observe(el));
 
-// RSVP
+// RSVP Formspree Submission
 function submitRSVP(e) {
   e.preventDefault();
-  document.getElementById('formFields').style.display = 'none';
-  document.getElementById('successMsg').classList.add('show');
+  const form = e.target;
+  const data = new FormData(form);
+  const submitBtn = form.querySelector('.submit-btn');
+  const originalBtnText = submitBtn.textContent;
+  
+  // Show loading state
+  submitBtn.textContent = 'Sending...';
+  submitBtn.disabled = true;
+
+  fetch(form.action, {
+    method: 'POST',
+    body: data,
+    headers: {
+      'Accept': 'application/json'
+    }
+  }).then(response => {
+    if (response.ok) {
+      document.getElementById('formFields').style.display = 'none';
+      document.getElementById('successMsg').classList.add('show');
+    } else {
+      alert("Oops! There was a problem submitting your form. Please try again.");
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+    }
+  }).catch(error => {
+    alert("Oops! There was a problem submitting your form. Please check your internet connection.");
+    submitBtn.textContent = originalBtnText;
+    submitBtn.disabled = false;
+  });
 }
 </script>
 
