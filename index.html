@@ -270,19 +270,169 @@
     justify-content: center;
     padding: 100px 20px;
   }
+  
+  /* ========================================= */
+  /* CREATIVE GROOM'S HOUSE - WITH IMAGE */
+  /* ========================================= */
+  #groom {
+    background: linear-gradient(135deg, rgba(31,58,46,0.85), rgba(45,74,62,0.85)), 
+                url('IMG_2856.JPG') center/cover no-repeat fixed;
+    position: relative;
+  }
+  
+  #groom::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(232,216,196,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(232,216,196,0.1) 0%, transparent 50%);
+  }
+  
+  #groom .schedule-content {
+    background: rgba(255,255,255,0.95);
+    border: none;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.4), inset 0 0 60px rgba(232,216,196,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Decorative top image banner */
+  #groom .schedule-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    opacity: 0.9;
+  }
+  
+  /* Decorative pattern overlay */
+  #groom .schedule-content::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      repeating-linear-gradient(45deg, rgba(31,58,46,0.02) 0px, rgba(31,58,46,0.02) 1px, transparent 1px, transparent 20px);
+    pointer-events: none;
+  }
+  
+  #groom .content-wrapper {
+    position: relative;
+    z-index: 2;
+  }
+  
+  #groom .decorative-corner {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 3px solid var(--nude);
+    opacity: 0.6;
+  }
+  #groom .corner-top-left {
+    top: 140px;
+    left: 30px;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 20px 0 0 0;
+  }
+  #groom .corner-bottom-right {
+    bottom: 30px;
+    right: 30px;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 20px 0;
+  }
+  
+  /* ========================================= */
+  /* CREATIVE BRIDE'S HOUSE - WITH IMAGE */
+  /* ========================================= */
+  #bride {
+    background: linear-gradient(135deg, rgba(232,216,196,0.9), rgba(250,246,240,0.9)), 
+                url('IMG_2857.JPG') center/cover no-repeat fixed;
+    position: relative;
+  }
+  
+  #bride::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 30% 30%, rgba(31,58,46,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(31,58,46,0.08) 0%, transparent 40%);
+  }
+  
+  #bride .schedule-content {
+    background: rgba(255,255,255,0.92);
+    border: 2px solid rgba(232,216,196,0.8);
+    box-shadow: 0 30px 90px rgba(31,58,46,0.2), inset 0 0 80px rgba(232,216,196,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Floral decorative elements */
+  #bride .schedule-content::before {
+    content: '❦';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    color: var(--green);
+    opacity: 0.4;
+    z-index: 3;
+  }
+  
+  #bride .schedule-content::after {
+    content: '✿';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+    color: var(--nude);
+    opacity: 0.5;
+    z-index: 3;
+  }
+  
+  #bride .content-wrapper {
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* Side decorative vines */
+  #bride .vine-left,
+  #bride .vine-right {
+    position: absolute;
+    width: 60px;
+    height: 200px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.3;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  #bride .vine-left {
+    left: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 0 Q30 50 50 100 T50 200' stroke='%231f3a2e' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  }
+  #bride .vine-right {
+    right: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 0 Q70 50 50 100 T50 200' stroke='%231f3a2e' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  }
+
   .schedule-content {
     position: relative;
     z-index: 2;
     max-width: 650px;
     text-align: center;
-    background: rgba(255,255,255,0.95);
     padding: 70px 60px;
     border-radius: 20px;
-    box-shadow: 0 40px 120px rgba(0,0,0,0.2);
     opacity: 0;
     transform: translateY(60px);
     transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
-    border: 2px solid rgba(232,216,196,0.5);
   }
   .schedule-content.visible {
     opacity: 1;
@@ -290,7 +440,7 @@
   }
   .schedule-content.visible:hover {
     transform: translateY(-8px);
-    box-shadow: 0 50px 140px rgba(0,0,0,0.25);
+    box-shadow: 0 50px 120px rgba(0,0,0,0.3);
   }
   
   .time-badge {
@@ -305,6 +455,8 @@
     text-transform: uppercase;
     margin-bottom: 35px;
     box-shadow: 0 10px 30px rgba(31,58,46,0.3);
+    position: relative;
+    z-index: 3;
   }
   .schedule-title {
     font-family: 'Great Vibes', cursive;
@@ -347,157 +499,6 @@
     background: rgba(232,216,196,0.2);
     line-height: 2;
     color: var(--green-dark);
-  }
-
-  /* ========================================= */
-  /* CREATIVE GROOM'S HOUSE */
-  /* ========================================= */
-  #groom {
-    background-color: #f0ebe4;
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(31, 58, 46, 0.04) 0%, transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(31, 58, 46, 0.04) 0%, transparent 25%),
-      repeating-linear-gradient(45deg, rgba(31, 58, 46, 0.015) 0px, rgba(31, 58, 46, 0.015) 1px, transparent 1px, transparent 12px);
-  }
-  #groom .schedule-content {
-    border: 1px solid rgba(31, 58, 46, 0.15);
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(10px);
-  }
-  /* Elegant corner frames */
-  #groom .schedule-content::before,
-  #groom .schedule-content::after {
-    content: '';
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 2px solid var(--green);
-    transition: all 0.6s ease;
-    z-index: 3;
-  }
-  #groom .schedule-content::before {
-    top: -2px;
-    left: -2px;
-    border-right: none;
-    border-bottom: none;
-    border-radius: 20px 0 0 0;
-  }
-  #groom .schedule-content::after {
-    bottom: -2px;
-    right: -2px;
-    border-left: none;
-    border-top: none;
-    border-radius: 0 0 20px 0;
-  }
-  #groom .schedule-content:hover::before,
-  #groom .schedule-content:hover::after {
-    width: 100%;
-    height: 100%;
-    opacity: 0.1;
-    border-radius: 20px;
-  }
-  /* Side decorative line */
-  #groom .decorative-line {
-    position: absolute;
-    left: 8%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 180px;
-    background: linear-gradient(to bottom, transparent, var(--green), transparent);
-    opacity: 0.4;
-    z-index: 1;
-  }
-  #groom .decorative-line::before {
-    content: '◆';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--green);
-    font-size: 1rem;
-    background: #f0ebe4;
-    padding: 8px 0;
-    animation: floatDiamond 4s ease-in-out infinite;
-  }
-
-  /* ========================================= */
-  /* CREATIVE BRIDE'S HOUSE */
-  /* ========================================= */
-  #bride {
-    background-color: #faf6f0;
-    background-image: 
-      radial-gradient(circle at 20% 30%, rgba(232, 216, 196, 0.5) 0%, transparent 30%),
-      radial-gradient(circle at 80% 70%, rgba(232, 216, 196, 0.5) 0%, transparent 30%),
-      radial-gradient(circle at 50% 50%, rgba(31, 58, 46, 0.02) 0%, transparent 40%);
-  }
-  #bride .schedule-content {
-    border: 1px solid rgba(232, 216, 196, 0.8);
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 40px 120px rgba(31,58,46,0.15), inset 0 0 40px rgba(232,216,196,0.15);
-  }
-  /* Floral decorative elements */
-  #bride .schedule-content::before,
-  #bride .schedule-content::after {
-    content: '❦';
-    position: absolute;
-    font-size: 1.8rem;
-    color: var(--green);
-    opacity: 0.3;
-    transition: all 0.6s ease;
-    z-index: 3;
-  }
-  #bride .schedule-content::before {
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  #bride .schedule-content::after {
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%) rotate(180deg);
-  }
-  #bride .schedule-content:hover::before,
-  #bride .schedule-content:hover::after {
-    opacity: 0.7;
-    transform: translateX(-50%) scale(1.2);
-  }
-  #bride .schedule-content:hover::after {
-    transform: translateX(-50%) rotate(180deg) scale(1.2);
-  }
-  /* Side decorative line */
-  #bride .decorative-line {
-    position: absolute;
-    right: 8%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 180px;
-    background: linear-gradient(to bottom, transparent, var(--nude), transparent);
-    opacity: 0.5;
-    z-index: 1;
-  }
-  #bride .decorative-line::before {
-    content: '✿';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--nude);
-    font-size: 1.4rem;
-    background: #faf6f0;
-    padding: 8px 0;
-    animation: floatFlower 5s ease-in-out infinite;
-  }
-
-  /* Floating Animations */
-  @keyframes floatDiamond {
-    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-    50% { transform: translate(-50%, -50%) translateY(-12px); }
-  }
-  @keyframes floatFlower {
-    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-    50% { transform: translate(-50%, -50%) translateY(-15px); }
   }
 
   /* Church & Restaurant */
@@ -648,8 +649,8 @@
     .seal { width: 120px; height: 120px; font-size: 1.6rem; }
     .schedule-page.with-image { background-attachment: scroll; }
     
-    /* Hide side decorative lines on mobile for cleaner look */
-    .decorative-line { display: none; }
+    /* Hide decorative elements on mobile */
+    .decorative-corner, .vine-left, .vine-right { display: none; }
   }
   @media (max-width: 480px) {
     .hero-names { font-size: 3.5rem; }
@@ -715,34 +716,40 @@
     </div>
   </section>
 
-  <!-- Groom's House - CREATIVE -->
+  <!-- Groom's House - CREATIVE WITH IMAGE -->
   <section class="schedule-page" id="groom">
-    <div class="decorative-line"></div>
     <div class="schedule-content">
-      <div class="time-badge">11:00 AM</div>
-      <h2 class="schedule-title">Groom's House</h2>
-      <div class="schedule-divider"></div>
-      <p class="schedule-desc">The celebration begins with traditional blessings and joyful preparations at the groom's family home.</p>
-      <div class="schedule-address">
-        Groom's Family Residence<br>
-        Address Line 1<br>
-        City, Country
+      <div class="decorative-corner corner-top-left"></div>
+      <div class="decorative-corner corner-bottom-right"></div>
+      <div class="content-wrapper">
+        <div class="time-badge">11:00 AM</div>
+        <h2 class="schedule-title">Groom's House</h2>
+        <div class="schedule-divider"></div>
+        <p class="schedule-desc">The celebration begins with traditional blessings and joyful preparations at the groom's family home.</p>
+        <div class="schedule-address">
+          Groom's Family Residence<br>
+          Address Line 1<br>
+          City, Country
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Bride's House - CREATIVE -->
+  <!-- Bride's House - CREATIVE WITH IMAGE -->
   <section class="schedule-page" id="bride">
-    <div class="decorative-line"></div>
+    <div class="vine-left"></div>
+    <div class="vine-right"></div>
     <div class="schedule-content">
-      <div class="time-badge">1:00 PM</div>
-      <h2 class="schedule-title">Bride's House</h2>
-      <div class="schedule-divider"></div>
-      <p class="schedule-desc">The groom's journey to claim his beloved bride, filled with music, traditions, and family celebrations.</p>
-      <div class="schedule-address">
-        Bride's Family Residence<br>
-        Address Line 1<br>
-        City, Country
+      <div class="content-wrapper">
+        <div class="time-badge">1:00 PM</div>
+        <h2 class="schedule-title">Bride's House</h2>
+        <div class="schedule-divider"></div>
+        <p class="schedule-desc">The groom's journey to claim his beloved bride, filled with music, traditions, and family celebrations.</p>
+        <div class="schedule-address">
+          Bride's Family Residence<br>
+          Address Line 1<br>
+          City, Country
+        </div>
       </div>
     </div>
   </section>
